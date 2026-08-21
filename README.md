@@ -71,25 +71,19 @@ python evaluate.py --run <timestamp>
 
 Saves `metrics.csv` and `trajectories.json` into `artifacts/<timestamp>/eval/`.
 
-### 5. Visualization (Ghost Cars)
-
-Replay the evaluation trajectories in Pygame.
-
+### 5. Visualization Hub (Interactive)
+The easiest way to view the simulation is the interactive launcher. Just run:
 ```bash
-python visualize.py --run <timestamp>
+python visualize.py
 ```
+This opens an arrow-key navigable menu where you can select:
+1. **Mode**: Human Play, Evaluation Replay, or Training Replay.
+2. **Run**: Automatically lists all available runs from the `artifacts/` folder.
+3. **Filter**: Choose to view the best episode, all ghost cars, or a specific episode.
 
-You can also filter what you see:
-
+You can also still use CLI arguments for automation:
 ```bash
-# View only the best episode
-python visualize.py --run <timestamp> --episode best
-
-# View a specific episode ID
-python visualize.py --run <timestamp> --episode 4
-
-# View trajectories recorded during training (watch it learn!)
-python visualize.py --run <timestamp> --mode train --episode all
+python visualize.py --run <timestamp> --mode eval --episode best
 ```
 
 - **Red Cars**: Standard attempts.
