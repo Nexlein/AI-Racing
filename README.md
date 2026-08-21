@@ -1,6 +1,8 @@
 # AI Racing
 
-<https://github.com/user-attachments/assets/18a41d7b-af1c-45b2-a23d-204d9cb1a5b0>
+<div align="center">
+    <https://github.com/user-attachments/assets/18a41d7b-af1c-45b2-a23d-204d9cb1a5b0>
+</div>
 
 Reinforcement Learning agent that learns to drive a car around a track. Built with **Gymnasium**, **Pygame**, and **Stable Baselines3 (PPO)**.
 
