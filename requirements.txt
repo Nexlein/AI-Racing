@@ -6,3 +6,4 @@ stable-baselines3[extra]
 tensorboard
 pandas
 matplotlib
+PyYAML
