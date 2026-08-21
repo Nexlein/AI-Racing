@@ -28,6 +28,7 @@ class RacingEnv(gym.Env):
         self.screen: pygame.Surface | None = None
         self.clock: pygame.time.Clock | None = None
         self.car: Car | None = None
+        self.current_checkpoint = 0
         self.steps = 0
         self.max_steps = 1000
 
@@ -36,6 +37,7 @@ class RacingEnv(gym.Env):
     ) -> tuple[np.ndarray, dict[str, Any]]:
         super().reset(seed=seed, options=options)
         self.car = Car(self.track.start_pos, self.track.start_angle)
+        self.current_checkpoint = 0
         self.steps = 0
 
         if self.render_mode == "human":
@@ -65,8 +67,20 @@ class RacingEnv(gym.Env):
         truncated = self.steps >= self.max_steps
         terminated = crashed
 
-        # Reward: forward progress proxy (speed). Penalize crash.
-        reward = float(self.car.speed * 0.1)
+        reward = -0.1  # Base penalty to encourage speed
+
+        # Checkpoint logic
+        cp = self.track.checkpoints[self.current_checkpoint]
+        if cp.collidepoint(self.car.pos[0], self.car.pos[1]):
+            self.current_checkpoint += 1
+            reward += 10.0
+            if self.current_checkpoint >= len(self.track.checkpoints):
+                reward += 100.0
+                terminated = True
+                self.current_checkpoint = (
+                    0  # Prevent out of bounds if it somehow keeps running
+                )
+
         if crashed:
             reward = -10.0
 
