@@ -6,6 +6,7 @@
 Reinforcement Learning agent that learns to drive a car around a track. Built with **Gymnasium**, **Pygame**, and **Stable Baselines3 (PPO)**.
 
 ## Features
+
 - Custom kinematic physics and raycast sensors.
 - Fully isolated artifact tracking for 100% reproducible training runs.
 - Interactive terminal UI (TUI) for launching replays.
@@ -92,6 +93,7 @@ python visualize.py
 ```
 
 #### Replay Controls
+
 - **Up / Down**: Speed up or slow down playback (+/- 30 FPS).
 - **Left / Right**: Skip 50 frames backward or forward.
 - **Mouse Click/Drag**: Scrub the timeline at the bottom of the window to instantly jump to any time.

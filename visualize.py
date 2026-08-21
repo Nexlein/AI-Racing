@@ -255,7 +255,7 @@ def main():
         pygame.display.flip()
 
         if recording:
-            frame = pygame.surfarray.pixels3d(screen)
+            frame = pygame.surfarray.array3d(screen)
             frame = np.transpose(frame, (1, 0, 2))
             writer.append_data(frame)
         else:
