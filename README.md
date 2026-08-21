@@ -86,6 +86,6 @@ You can also still use CLI arguments for automation:
 python visualize.py --run <timestamp> --mode eval --episode best
 ```
 
-- **Red Cars**: Standard attempts.
-- **Green Car**: Best attempt (highest reward).
+- **Opaque Car**: The highlighted/best attempt.
+- **Ghost Cars (Semi-transparent)**: Standard attempts.
 - **Cyan Lines**: Active raycast sensors (what the AI sees).
