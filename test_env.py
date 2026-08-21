@@ -8,6 +8,8 @@ def main():
     env = RacingEnv(render_mode="human")
     _obs, _info = env.reset()
 
+
+
     running = True
     while running:
         throttle = 0.0

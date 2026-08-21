@@ -58,8 +58,7 @@ def main():
     track = Track(800, 600)
 
     try:
-        car_img_base = pygame.image.load("assets/car.jpg").convert()
-        car_img_base.set_colorkey((255, 255, 255))
+        car_img_base = pygame.image.load("assets/car.png").convert_alpha()
         car_img_base = pygame.transform.scale(car_img_base, (40, 20))
         
         ghost_img_base = car_img_base.copy()
