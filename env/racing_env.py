@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, ClassVar
 
 import gymnasium as gym
 import numpy as np
@@ -7,7 +7,6 @@ from gymnasium import spaces
 
 from env.car import Car
 from env.track import Track
-from typing import ClassVar
 
 
 class RacingEnv(gym.Env):
