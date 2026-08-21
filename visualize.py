@@ -13,7 +13,8 @@ def main():
     parser.add_argument("--run", type=str, required=True, help="Timestamp of the run")
     args = parser.parse_args()
 
-    run_dir = os.path.join("artifacts", args.run)
+    run_name = os.path.basename(os.path.normpath(args.run))
+    run_dir = os.path.join("artifacts", run_name)
     eval_dir = os.path.join(run_dir, "eval")
     traj_path = os.path.join(eval_dir, "trajectories.json")
     metrics_path = os.path.join(eval_dir, "metrics.csv")
@@ -29,6 +30,8 @@ def main():
     best_episode = int(df.loc[df["reward"].idxmax()]["episode"])
 
     pygame.init()
+    pygame.font.init()
+    font = pygame.font.SysFont(None, 36)
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption(f"Ghost Cars - Run {args.run}")
     clock = pygame.time.Clock()
@@ -66,8 +69,21 @@ def main():
                 rect = car_img.get_rect(center=(state["x"], state["y"]))
                 screen.blit(car_img, rect.topleft)
 
+                if ep == best_episode and "radars" in state:
+                    car_pos = (state["x"], state["y"])
+                    for radar in state["radars"]:
+                        pygame.draw.line(screen, (0, 255, 255), car_pos, radar, 1)
+                        pygame.draw.circle(screen, (0, 255, 255), radar, 3)
+
+        hud_text = font.render(
+            f"Replay Step: {step_idx} | Best Episode: {best_episode}",
+            True,
+            (255, 255, 255),
+        )
+        screen.blit(hud_text, (10, 10))
+
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(60)
 
         step_idx += 1
         if all_done:

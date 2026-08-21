@@ -21,7 +21,8 @@ def plot_results(log_dir: str, output_file: str):
         df = pd.read_csv(csv_path, skiprows=1)
         plt.figure(figsize=(10, 5))
         plt.plot(
-            df["r"].rolling(window=100).mean(), label="Reward (100 ep rolling mean)"
+            df["r"].rolling(window=100, min_periods=1).mean(),
+            label="Reward (100 ep rolling mean)",
         )
         plt.xlabel("Episodes")
         plt.ylabel("Reward")

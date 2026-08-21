@@ -21,7 +21,8 @@ def main():
     )
     args = parser.parse_args()
 
-    run_dir = os.path.join("artifacts", args.run)
+    run_name = os.path.basename(os.path.normpath(args.run))
+    run_dir = os.path.join("artifacts", run_name)
     model_path = os.path.join(run_dir, "train", "models", "best_model.zip")
     eval_dir = os.path.join(run_dir, "eval")
 
@@ -45,12 +46,16 @@ def main():
         ep_trajectory = []
 
         while running:
-            assert env.unwrapped.car is not None
+            import typing
+
+            racing_env = typing.cast(RacingEnv, env.unwrapped)
+            assert racing_env.car is not None
             ep_trajectory.append(
                 {
-                    "x": env.unwrapped.car.pos[0],
-                    "y": env.unwrapped.car.pos[1],
-                    "angle": env.unwrapped.car.angle,
+                    "x": racing_env.car.pos[0],
+                    "y": racing_env.car.pos[1],
+                    "angle": racing_env.car.angle,
+                    "radars": racing_env.car.radars,
                 }
             )
 
