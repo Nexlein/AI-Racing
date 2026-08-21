@@ -169,6 +169,7 @@ def main():
 
     step_idx = 0
     running = True
+    playback_fps = 60
 
     while running:
         for event in pygame.event.get():
@@ -176,6 +177,11 @@ def main():
                 event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    playback_fps = min(300, playback_fps + 30)
+                elif event.key == pygame.K_DOWN:
+                    playback_fps = max(15, playback_fps - 30)
 
         track.draw(screen)
 
@@ -204,14 +210,14 @@ def main():
                         pygame.draw.line(screen, (0, 255, 255), car_pos, radar, 1)
                         pygame.draw.circle(screen, (0, 255, 255), radar, 3)
 
-        mode_text = f"Mode: {args.mode.upper()} | Filter: {args.episode} | Highlighted: {highlight_episode}"
+        mode_text = f"Mode: {args.mode.upper()} | Filter: {args.episode} | Highlighted: {highlight_episode} | Speed: {playback_fps} FPS"
         hud_text1 = font.render(mode_text, True, (255, 255, 255))
         hud_text2 = font.render(f"Replay Step: {step_idx}", True, (255, 255, 255))
         screen.blit(hud_text1, (10, 10))
         screen.blit(hud_text2, (10, 40))
 
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(playback_fps)
 
         step_idx += 1
         if all_done:
