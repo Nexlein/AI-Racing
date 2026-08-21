@@ -143,6 +143,11 @@ def main():
     else:
         highlight_episode = true_best_episode
 
+    max_steps = max((len(t["steps"]) for t in trajectories), default=0)
+    if max_steps == 0:
+        print("No steps found in trajectories.")
+        return
+
     pygame.init()
     pygame.font.init()
     font = pygame.font.SysFont(None, 36)
@@ -182,6 +187,17 @@ def main():
                     playback_fps = min(300, playback_fps + 30)
                 elif event.key == pygame.K_DOWN:
                     playback_fps = max(15, playback_fps - 30)
+                elif event.key == pygame.K_LEFT:
+                    step_idx = max(0, step_idx - 50)
+                elif event.key == pygame.K_RIGHT:
+                    step_idx = min(max_steps - 1, step_idx + 50)
+            elif (
+                event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION
+            ) and pygame.mouse.get_pressed()[0]:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                if mouse_y >= 570:
+                    progress = min(max(mouse_x / 800.0, 0.0), 1.0)
+                    step_idx = int(progress * (max_steps - 1))
 
         track.draw(screen)
 
@@ -212,15 +228,22 @@ def main():
 
         mode_text = f"Mode: {args.mode.upper()} | Filter: {args.episode} | Highlighted: {highlight_episode} | Speed: {playback_fps} FPS"
         hud_text1 = font.render(mode_text, True, (255, 255, 255))
-        hud_text2 = font.render(f"Replay Step: {step_idx}", True, (255, 255, 255))
+        hud_text2 = font.render(
+            f"Replay Step: {step_idx}/{max_steps}", True, (255, 255, 255)
+        )
         screen.blit(hud_text1, (10, 10))
         screen.blit(hud_text2, (10, 40))
+
+        # Draw timeline
+        pygame.draw.rect(screen, (50, 50, 50), (0, 580, 800, 20))
+        progress_width = int((step_idx / max(1, max_steps - 1)) * 800)
+        pygame.draw.rect(screen, (200, 50, 50), (0, 580, progress_width, 20))
 
         pygame.display.flip()
         clock.tick(playback_fps)
 
         step_idx += 1
-        if all_done:
+        if all_done or step_idx >= max_steps:
             step_idx = 0  # Loop playback
 
     pygame.quit()
