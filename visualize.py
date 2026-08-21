@@ -12,8 +12,9 @@ from env.track import Track
 
 
 def play_human():
-    from env.racing_env import RacingEnv
     import numpy as np
+
+    from env.racing_env import RacingEnv
 
     env = RacingEnv(render_mode="human")
     env.reset()
@@ -101,10 +102,7 @@ def main():
         "--episode", type=str, default="all", help="'all', 'best', or ID"
     )
 
-    if len(sys.argv) == 1:
-        args = run_tui()
-    else:
-        args = parser.parse_args()
+    args = run_tui() if len(sys.argv) == 1 else parser.parse_args()
 
     if args.mode == "human":
         play_human()
@@ -172,9 +170,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            if (
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
+                and event.key == pygame.K_ESCAPE
+            ):
                 running = False
 
         track.draw(screen)
