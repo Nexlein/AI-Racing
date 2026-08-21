@@ -146,6 +146,8 @@ def main():
     pygame.init()
     pygame.font.init()
     font = pygame.font.SysFont(None, 36)
+    small_font = pygame.font.SysFont(None, 22)
+
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption(f"Ghost Cars - Run {args.run}")
     clock = pygame.time.Clock()
@@ -188,6 +190,13 @@ def main():
                 car_img = pygame.transform.rotate(surface, state["angle"])
                 rect = car_img.get_rect(center=(state["x"], state["y"]))
                 screen.blit(car_img, rect.topleft)
+
+                text_color = (
+                    (255, 255, 255) if ep == highlight_episode else (150, 150, 150)
+                )
+                ep_text = small_font.render(str(ep), True, text_color)
+                text_rect = ep_text.get_rect(center=(state["x"], state["y"] - 30))
+                screen.blit(ep_text, text_rect)
 
                 if ep == highlight_episode and "radars" in state:
                     car_pos = (state["x"], state["y"])
