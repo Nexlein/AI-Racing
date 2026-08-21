@@ -57,11 +57,19 @@ def main():
 
     track = Track(800, 600)
 
-    ghost_surface = pygame.Surface((40, 20), pygame.SRCALPHA)
-    ghost_surface.fill((200, 50, 50, 100))  # Semi-transparent red
-
-    best_surface = pygame.Surface((40, 20), pygame.SRCALPHA)
-    best_surface.fill((50, 200, 50, 255))  # Solid green
+    try:
+        car_img_base = pygame.image.load("assets/car.jpg").convert()
+        car_img_base.set_colorkey((255, 255, 255))
+        car_img_base = pygame.transform.scale(car_img_base, (40, 20))
+        
+        ghost_img_base = car_img_base.copy()
+        ghost_img_base.set_alpha(100)
+    except FileNotFoundError:
+        car_img_base = pygame.Surface((40, 20), pygame.SRCALPHA)
+        car_img_base.fill((50, 200, 50, 255))
+        
+        ghost_img_base = pygame.Surface((40, 20), pygame.SRCALPHA)
+        ghost_img_base.fill((200, 50, 50, 100))
 
     step_idx = 0
     running = True
@@ -82,7 +90,7 @@ def main():
             if step_idx < len(steps):
                 all_done = False
                 state = steps[step_idx]
-                surface = best_surface if ep == highlight_episode else ghost_surface
+                surface = car_img_base if ep == highlight_episode else ghost_img_base
                 car_img = pygame.transform.rotate(surface, state["angle"])
                 rect = car_img.get_rect(center=(state["x"], state["y"]))
                 screen.blit(car_img, rect.topleft)

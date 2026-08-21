@@ -14,8 +14,13 @@ class Car:
         self.friction = 0.05
         self.turn_speed = 5
         self.length, self.width = 40, 20
-        self.surface = pygame.Surface((self.length, self.width), pygame.SRCALPHA)
-        self.surface.fill((200, 50, 50))
+        try:
+            self.surface = pygame.image.load("assets/car.jpg").convert()
+            self.surface.set_colorkey((255, 255, 255))
+            self.surface = pygame.transform.scale(self.surface, (self.length, self.width))
+        except FileNotFoundError:
+            self.surface = pygame.Surface((self.length, self.width), pygame.SRCALPHA)
+            self.surface.fill((200, 50, 50))
         self.radars = []
 
     def step(self, throttle, steering):
