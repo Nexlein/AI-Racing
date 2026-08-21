@@ -1,4 +1,4 @@
-from typing import Any, ClassVar
+from typing import Any
 
 import gymnasium as gym
 import numpy as np
@@ -10,10 +10,7 @@ from env.track import Track
 
 
 class RacingEnv(gym.Env):
-    metadata: ClassVar[dict[str, Any]] = {
-        "render_modes": ["human", "rgb_array"],
-        "render_fps": 30,
-    }
+    metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}  # noqa: RUF012
 
     def __init__(self, render_mode: str | None = None):
         self.render_mode = render_mode
