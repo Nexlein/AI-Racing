@@ -15,7 +15,9 @@ class Car:
         self.turn_speed = 5
         self.length, self.width = 40, 20
         try:
-            self.surface = pygame.image.load("assets/car.png").convert_alpha()
+            self.surface = pygame.image.load("assets/car.png")
+            if pygame.display.get_surface() is not None:
+                self.surface = self.surface.convert_alpha()
             self.surface = pygame.transform.scale(self.surface, (self.length, self.width))
         except FileNotFoundError:
             self.surface = pygame.Surface((self.length, self.width), pygame.SRCALPHA)
