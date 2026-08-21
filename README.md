@@ -24,10 +24,10 @@ pip install -r requirements.txt
 
 ### 1. Manual Testing
 
-Drive the car manually using arrow keys to test physics and track boundaries.
+Drive the car manually using arrow keys (or W, A, S, D) to test physics and track boundaries.
 
 ```bash
-python test_env.py
+python visualize.py --mode human
 ```
 
 ### 2. Configuration

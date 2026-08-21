@@ -18,7 +18,9 @@ class Car:
             self.surface = pygame.image.load("assets/car.png")
             if pygame.display.get_surface() is not None:
                 self.surface = self.surface.convert_alpha()
-            self.surface = pygame.transform.scale(self.surface, (self.length, self.width))
+            self.surface = pygame.transform.scale(
+                self.surface, (self.length, self.width)
+            )
         except FileNotFoundError:
             self.surface = pygame.Surface((self.length, self.width), pygame.SRCALPHA)
             self.surface.fill((200, 50, 50))

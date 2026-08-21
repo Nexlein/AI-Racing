@@ -8,14 +8,65 @@ import pygame
 from env.track import Track
 
 
+def play_human():
+    from env.racing_env import RacingEnv
+    import numpy as np
+
+    env = RacingEnv(render_mode="human")
+    env.reset()
+
+    running = True
+    while running:
+        throttle = 0.0
+        steering = 0.0
+
+        pygame.event.pump()
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_ESCAPE] or keys[pygame.K_q]:
+            running = False
+
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            throttle = 1.0
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            throttle = -1.0
+
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            steering = 1.0
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            steering = -1.0
+
+        _obs, _reward, terminated, truncated, _info = env.step(
+            np.array([steering, throttle], dtype=np.float32)
+        )
+
+        if terminated or truncated:
+            print(f"{'Crashed' if terminated else 'Time up'}! Resetting...")
+            env.reset()
+
+    env.close()
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", type=str, required=True, help="Timestamp of the run")
-    parser.add_argument("--mode", type=str, default="eval", choices=["eval", "train"])
+    parser.add_argument(
+        "--run", type=str, help="Timestamp of the run (required for eval/train)"
+    )
+    parser.add_argument(
+        "--mode", type=str, default="eval", choices=["eval", "train", "human"]
+    )
     parser.add_argument(
         "--episode", type=str, default="all", help="'all', 'best', or ID"
     )
     args = parser.parse_args()
+
+    if args.mode == "human":
+        play_human()
+        return
+
+    if not args.run:
+        print("--run is required for eval or train modes.")
+        return
 
     run_name = os.path.basename(os.path.normpath(args.run))
     run_dir = os.path.join("artifacts", run_name)
@@ -60,13 +111,13 @@ def main():
     try:
         car_img_base = pygame.image.load("assets/car.png").convert_alpha()
         car_img_base = pygame.transform.scale(car_img_base, (40, 20))
-        
+
         ghost_img_base = car_img_base.copy()
         ghost_img_base.set_alpha(100)
     except FileNotFoundError:
         car_img_base = pygame.Surface((40, 20), pygame.SRCALPHA)
         car_img_base.fill((50, 200, 50, 255))
-        
+
         ghost_img_base = pygame.Surface((40, 20), pygame.SRCALPHA)
         ghost_img_base.fill((200, 50, 50, 100))
 
