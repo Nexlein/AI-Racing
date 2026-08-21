@@ -1,7 +1,6 @@
 # AI Racing
 
-![AI Racing Demo](assets/demo.mp4)
-*(If the MP4 doesn't autoplay on GitHub, you can use `<video src="assets/demo.mp4" autoplay loop muted />`)*
+<video src="https://github.com/Nexlein/AI-Racing/raw/main/assets/demo.mp4" controls autoplay loop muted width="800"></video>
 
 Reinforcement Learning agent that learns to drive a car around a track. Built with **Gymnasium**, **Pygame**, and **Stable Baselines3 (PPO)**.
 
