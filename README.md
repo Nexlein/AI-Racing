@@ -23,47 +23,75 @@ pip install -r requirements.txt
 ## Usage
 
 ### 1. Manual Testing
+
 Drive the car manually using arrow keys to test physics and track boundaries.
+
 ```bash
 python test_env.py
 ```
 
 ### 2. Configuration
+
 Edit `config.yaml` to adjust hyperparameters before training:
+
 - `learning_rate`: Step size for the optimizer.
 - `total_timesteps`: Total frames the AI will experience during training.
 - `eval_freq`: How often to evaluate and save the best model.
 - `save_freq`: How often to save checkpoint models.
 
 ### 3. Training
+
 Start the RL training loop.
+
 ```bash
 python train.py
 ```
+
 This creates `artifacts/<timestamp>/` containing:
+
 - `config.yaml`: Backup of the settings used.
 - `train/models/`: Saved model checkpoints (`.zip`).
 - `train/logs/`: Tensorboard data and raw CSV metrics.
 - `train/chart.png`: Static reward curve plotted at completion.
 
 Monitor training live via Tensorboard:
+
 ```bash
 tensorboard --logdir artifacts/<timestamp>/train/logs/
 ```
 
 ### 4. Evaluation
+
 Run the best model to generate trajectory data for visualization.
+
 ```bash
 python evaluate.py --run <timestamp>
 # Example: python evaluate.py --run 2026-08-21_15-02-49
 ```
+
 Saves `metrics.csv` and `trajectories.json` into `artifacts/<timestamp>/eval/`.
 
 ### 5. Visualization (Ghost Cars)
+
 Replay the evaluation trajectories in Pygame.
+
 ```bash
 python visualize.py --run <timestamp>
 ```
+
+You can also filter what you see:
+
+```bash
+# View only the best episode
+python visualize.py --run <timestamp> --episode best
+
+# View a specific episode ID
+python visualize.py --run <timestamp> --episode 4
+
+# View trajectories recorded during training (watch it learn!)
+python visualize.py --run <timestamp> --mode train --episode all
+```
+
 - **Red Cars**: Standard attempts.
 - **Green Car**: Best attempt (highest reward).
 - **Cyan Lines**: Active raycast sensors (what the AI sees).

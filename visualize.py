@@ -11,13 +11,17 @@ from env.track import Track
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", type=str, required=True, help="Timestamp of the run")
+    parser.add_argument("--mode", type=str, default="eval", choices=["eval", "train"])
+    parser.add_argument(
+        "--episode", type=str, default="all", help="'all', 'best', or ID"
+    )
     args = parser.parse_args()
 
     run_name = os.path.basename(os.path.normpath(args.run))
     run_dir = os.path.join("artifacts", run_name)
-    eval_dir = os.path.join(run_dir, "eval")
-    traj_path = os.path.join(eval_dir, "trajectories.json")
-    metrics_path = os.path.join(eval_dir, "metrics.csv")
+    target_dir = os.path.join(run_dir, args.mode)
+    traj_path = os.path.join(target_dir, "trajectories.json")
+    metrics_path = os.path.join(target_dir, "metrics.csv")
 
     if not os.path.exists(traj_path):
         print(f"Trajectories not found at {traj_path}")
@@ -28,6 +32,16 @@ def main():
 
     df = pd.read_csv(metrics_path)
     best_episode = int(df.loc[df["reward"].idxmax()]["episode"])
+
+    if args.episode == "best":
+        trajectories = [t for t in trajectories if t["episode"] == best_episode]
+    elif args.episode != "all":
+        try:
+            ep_id = int(args.episode)
+            trajectories = [t for t in trajectories if t["episode"] == ep_id]
+        except ValueError:
+            print("Invalid --episode argument.")
+            return
 
     pygame.init()
     pygame.font.init()

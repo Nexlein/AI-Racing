@@ -9,6 +9,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
 from stable_baselines3.common.monitor import Monitor
 
+from env.callbacks import TrajectoryRecordCallback
 from env.racing_env import RacingEnv
 
 
@@ -76,10 +77,17 @@ def main():
         learning_rate=config.get("learning_rate", 0.0003),
     )
 
+    traj_env = RacingEnv()
+    traj_callback = TrajectoryRecordCallback(
+        eval_env=traj_env,
+        save_dir=train_dir,
+        record_freq=config.get("trajectory_freq", 5000),
+    )
+
     print(f"Starting training. Artifacts in {run_dir}")
     model.learn(
         total_timesteps=config.get("total_timesteps", 100000),
-        callback=[eval_callback, checkpoint_callback],
+        callback=[eval_callback, checkpoint_callback, traj_callback],
         progress_bar=True,
     )
 
