@@ -2,3 +2,7 @@ pygame
 gymnasium
 numpy
 pyright
+stable-baselines3[extra]
+tensorboard
+pandas
+matplotlib
