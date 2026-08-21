@@ -1,6 +1,7 @@
 # AI Racing
 
-<video src="https://github.com/Nexlein/AI-Racing/raw/main/assets/demo.mp4" controls autoplay loop muted width="800"></video>
+> [!NOTE]
+> **Video Placeholder**: Edit this file on GitHub and drag-and-drop your `assets/demo.mp4` right here to embed it using GitHub's CDN.
 
 Reinforcement Learning agent that learns to drive a car around a track. Built with **Gymnasium**, **Pygame**, and **Stable Baselines3 (PPO)**.
 
