@@ -26,6 +26,9 @@ jobs:
     - name: Format check with Ruff
       run: |
         ruff format --check .
+    - name: Type check with Pyright
+      run: |
+        pyright
     - name: Test with pytest
       run: |
         pytest

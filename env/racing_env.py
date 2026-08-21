@@ -4,12 +4,13 @@ import numpy as np
 import pygame
 from env.car import Car
 from env.track import Track
+from typing import Any
 
 
 class RacingEnv(gym.Env):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}
 
-    def __init__(self, render_mode=None):
+    def __init__(self, render_mode: str | None = None):
         self.render_mode = render_mode
         self.width, self.height = 800, 600
         self.track = Track(self.width, self.height)
@@ -24,14 +25,16 @@ class RacingEnv(gym.Env):
             low=0.0, high=1.0, shape=(6,), dtype=np.float32
         )
 
-        self.screen = None
-        self.clock = None
-        self.car = None
+        self.screen: pygame.Surface | None = None
+        self.clock: pygame.time.Clock | None = None
+        self.car: Car | None = None
         self.steps = 0
         self.max_steps = 1000
 
-    def reset(self, seed=None, options=None):
-        super().reset(seed=seed)
+    def reset(
+        self, *, seed: int | None = None, options: dict[str, Any] | None = None
+    ) -> tuple[np.ndarray, dict[str, Any]]:
+        super().reset(seed=seed, options=options)
         self.car = Car(self.track.start_pos, self.track.start_angle)
         self.steps = 0
 
@@ -49,18 +52,21 @@ class RacingEnv(gym.Env):
         if self.clock is None:
             self.clock = pygame.time.Clock()
 
-    def step(self, action):
+    def step(
+        self, action: np.ndarray
+    ) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
+        assert self.car is not None
         self.steps += 1
         steering, throttle = action
 
-        self.car.step(throttle, steering)
+        self.car.step(float(throttle), float(steering))
 
         crashed = self.car.check_collision(self.track.mask)
         truncated = self.steps >= self.max_steps
         terminated = crashed
 
         # Reward: forward progress proxy (speed). Penalize crash.
-        reward = self.car.speed * 0.1
+        reward = float(self.car.speed * 0.1)
         if crashed:
             reward = -10.0
 
@@ -69,7 +75,8 @@ class RacingEnv(gym.Env):
 
         return self._get_obs(), reward, terminated, truncated, {}
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
+        assert self.car is not None
         rays = self.car.get_raycasts(self.track.mask)
         speed = np.array([self.car.speed / self.car.max_speed], dtype=np.float32)
         return np.concatenate((rays, speed))
@@ -79,6 +86,9 @@ class RacingEnv(gym.Env):
             return
 
         self._setup_pygame()
+        assert self.screen is not None
+        assert self.clock is not None
+        assert self.car is not None
 
         self.track.draw(self.screen)
         self.car.draw(self.screen)

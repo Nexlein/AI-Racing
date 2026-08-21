@@ -1,5 +1,6 @@
 import pygame
 from env.racing_env import RacingEnv
+import numpy as np
 
 
 def main():
@@ -28,7 +29,9 @@ def main():
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             steering = -1.0
 
-        obs, reward, terminated, truncated, info = env.step([steering, throttle])
+        obs, reward, terminated, truncated, info = env.step(
+            np.array([steering, throttle], dtype=np.float32)
+        )
 
         if terminated or truncated:
             print(f"{'Crashed' if terminated else 'Time up'}! Resetting...")
