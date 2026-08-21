@@ -260,6 +260,7 @@ def main():
         pygame.display.flip()
 
         if recording:
+            assert writer is not None
             frame = pygame.surfarray.array3d(screen)
             frame = np.transpose(frame, (1, 0, 2))
             writer.append_data(frame)
@@ -270,11 +271,12 @@ def main():
         if all_done or step_idx >= max_steps:
             step_idx = 0  # Loop playback
             if recording:
+                assert writer is not None
                 recording = False
                 writer.close()
                 print(f"Finished recording {record_filename}")
 
-    if recording and writer:
+    if writer is not None:
         writer.close()
     pygame.quit()
 
