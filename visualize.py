@@ -31,17 +31,22 @@ def main():
         trajectories = json.load(f)
 
     df = pd.read_csv(metrics_path)
-    best_episode = int(df.loc[df["reward"].idxmax(), "episode"])  # type: ignore
+    true_best_episode = int(df.loc[df["reward"].idxmax(), "episode"])  # type: ignore
 
     if args.episode == "best":
-        trajectories = [t for t in trajectories if t["episode"] == best_episode]
+        highlight_episode = true_best_episode
+        trajectories = [t for t in trajectories if t["episode"] == highlight_episode]
     elif args.episode != "all":
         try:
-            ep_id = int(args.episode)
-            trajectories = [t for t in trajectories if t["episode"] == ep_id]
+            highlight_episode = int(args.episode)
+            trajectories = [
+                t for t in trajectories if t["episode"] == highlight_episode
+            ]
         except ValueError:
             print("Invalid --episode argument.")
             return
+    else:
+        highlight_episode = true_best_episode
 
     pygame.init()
     pygame.font.init()
@@ -77,23 +82,22 @@ def main():
             if step_idx < len(steps):
                 all_done = False
                 state = steps[step_idx]
-                surface = best_surface if ep == best_episode else ghost_surface
+                surface = best_surface if ep == highlight_episode else ghost_surface
                 car_img = pygame.transform.rotate(surface, state["angle"])
                 rect = car_img.get_rect(center=(state["x"], state["y"]))
                 screen.blit(car_img, rect.topleft)
 
-                if ep == best_episode and "radars" in state:
+                if ep == highlight_episode and "radars" in state:
                     car_pos = (state["x"], state["y"])
                     for radar in state["radars"]:
                         pygame.draw.line(screen, (0, 255, 255), car_pos, radar, 1)
                         pygame.draw.circle(screen, (0, 255, 255), radar, 3)
 
-        hud_text = font.render(
-            f"Replay Step: {step_idx} | Best Episode: {best_episode}",
-            True,
-            (255, 255, 255),
-        )
-        screen.blit(hud_text, (10, 10))
+        mode_text = f"Mode: {args.mode.upper()} | Filter: {args.episode} | Highlighted: {highlight_episode}"
+        hud_text1 = font.render(mode_text, True, (255, 255, 255))
+        hud_text2 = font.render(f"Replay Step: {step_idx}", True, (255, 255, 255))
+        screen.blit(hud_text1, (10, 10))
+        screen.blit(hud_text2, (10, 40))
 
         pygame.display.flip()
         clock.tick(60)
