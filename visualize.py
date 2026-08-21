@@ -1,9 +1,12 @@
 import argparse
 import json
 import os
+import sys
+from argparse import Namespace
 
 import pandas as pd
 import pygame
+import questionary
 
 from env.track import Track
 
@@ -47,6 +50,45 @@ def play_human():
     env.close()
 
 
+def run_tui() -> Namespace:
+    mode = questionary.select("Select Mode:", choices=["eval", "train", "human"]).ask()
+
+    if mode is None:
+        sys.exit(0)
+
+    if mode == "human":
+        return Namespace(mode="human", run=None, episode="all")
+
+    if not os.path.exists("artifacts"):
+        print("No artifacts directory found.")
+        sys.exit(1)
+
+    runs = [
+        d
+        for d in os.listdir("artifacts")
+        if os.path.isdir(os.path.join("artifacts", d))
+    ]
+    runs.sort(reverse=True)
+
+    if not runs:
+        print("No runs found in artifacts/")
+        sys.exit(1)
+
+    run = questionary.select("Select Run:", choices=runs).ask()
+
+    if run is None:
+        sys.exit(0)
+
+    episode = questionary.select(
+        "Select Episode Filter:", choices=["best", "all", "custom"]
+    ).ask()
+
+    if episode == "custom":
+        episode = questionary.text("Enter Episode ID:").ask()
+
+    return Namespace(mode=mode, run=run, episode=episode)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -58,7 +100,11 @@ def main():
     parser.add_argument(
         "--episode", type=str, default="all", help="'all', 'best', or ID"
     )
-    args = parser.parse_args()
+
+    if len(sys.argv) == 1:
+        args = run_tui()
+    else:
+        args = parser.parse_args()
 
     if args.mode == "human":
         play_human()
