@@ -1,7 +1,7 @@
 # AI Racing
 
-![AI Racing Demo](assets/demo.gif)
-*(Placeholder: Record a short GIF of the AI driving the track and save it as `assets/demo.gif`)*
+![AI Racing Demo](assets/demo.mp4)
+*(If the MP4 doesn't autoplay on GitHub, you can use `<video src="assets/demo.mp4" autoplay loop muted />`)*
 
 Reinforcement Learning agent that learns to drive a car around a track. Built with **Gymnasium**, **Pygame**, and **Stable Baselines3 (PPO)**.
 
