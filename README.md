@@ -97,7 +97,7 @@ python visualize.py
 - **Up / Down**: Speed up or slow down playback (+/- 30 FPS).
 - **Left / Right**: Skip 50 frames backward or forward.
 - **Mouse Click/Drag**: Scrub the timeline at the bottom of the window to instantly jump to any time.
-- **R**: Export the entire replay as `assets/demo.mp4` (automatically renders as fast as possible).
+- **R**: Export the entire replay as a `record_YYYY-MM-DD_HH-MM-SS.mp4` file in the project root.
 
 You can also still use CLI arguments for automation:
 

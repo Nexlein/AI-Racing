@@ -1,4 +1,5 @@
 import argparse
+import datetime
 import json
 import os
 import sys
@@ -179,6 +180,7 @@ def main():
     playback_fps = 60
     recording = False
     writer = None
+    record_filename = ""
 
     while running:
         for event in pygame.event.get():
@@ -198,9 +200,10 @@ def main():
                 elif event.key == pygame.K_r and not recording:
                     recording = True
                     step_idx = 0
-                    os.makedirs("assets", exist_ok=True)
-                    writer = imageio.get_writer("assets/demo.mp4", fps=60)
-                    print("Started recording assets/demo.mp4...")
+                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                    record_filename = f"record_{timestamp}.mp4"
+                    writer = imageio.get_writer(record_filename, fps=60)
+                    print(f"Started recording {record_filename}...")
             elif (
                 event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION
             ) and pygame.mouse.get_pressed()[0]:
@@ -267,7 +270,7 @@ def main():
             if recording:
                 recording = False
                 writer.close()
-                print("Finished recording assets/demo.mp4")
+                print(f"Finished recording {record_filename}")
 
     if recording and writer:
         writer.close()
