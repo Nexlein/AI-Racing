@@ -31,7 +31,7 @@ def main():
         trajectories = json.load(f)
 
     df = pd.read_csv(metrics_path)
-    best_episode = int(df.loc[df["reward"].idxmax()]["episode"])
+    best_episode = int(df.loc[df["reward"].idxmax(), "episode"])  # type: ignore
 
     if args.episode == "best":
         trajectories = [t for t in trajectories if t["episode"] == best_episode]
