@@ -1,11 +1,12 @@
-import pygame
-from env.racing_env import RacingEnv
 import numpy as np
+import pygame
+
+from env.racing_env import RacingEnv
 
 
 def main():
     env = RacingEnv(render_mode="human")
-    obs, info = env.reset()
+    _obs, _info = env.reset()
 
     running = True
     while running:
@@ -29,7 +30,7 @@ def main():
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             steering = -1.0
 
-        obs, reward, terminated, truncated, info = env.step(
+        _obs, _reward, terminated, truncated, _info = env.step(
             np.array([steering, throttle], dtype=np.float32)
         )
 

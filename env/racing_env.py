@@ -1,14 +1,20 @@
+from typing import Any
+
 import gymnasium as gym
-from gymnasium import spaces
 import numpy as np
 import pygame
+from gymnasium import spaces
+
 from env.car import Car
 from env.track import Track
-from typing import Any
+from typing import ClassVar
 
 
 class RacingEnv(gym.Env):
-    metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}
+    metadata: ClassVar[dict[str, Any]] = {
+        "render_modes": ["human", "rgb_array"],
+        "render_fps": 30,
+    }
 
     def __init__(self, render_mode: str | None = None):
         self.render_mode = render_mode
