@@ -200,7 +200,9 @@ def main():
                 elif event.key == pygame.K_r and not recording:
                     recording = True
                     step_idx = 0
-                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                    timestamp = datetime.datetime.now(
+                        tz=datetime.timezone.utc
+                    ).strftime("%Y-%m-%d_%H-%M-%S")
                     record_filename = f"record_{timestamp}.mp4"
                     writer = imageio.get_writer(record_filename, fps=60)
                     print(f"Started recording {record_filename}...")

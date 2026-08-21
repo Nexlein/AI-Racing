@@ -84,7 +84,6 @@ Saves `metrics.csv` and `trajectories.json` into `artifacts/<timestamp>/eval/`.
 ### 5. Visualization Hub (Interactive)
 
 ![TUI Menu](assets/tui.png)
-*(Placeholder: Take a screenshot of the terminal menu and save it as `assets/tui.png`)*
 
 The easiest way to view the simulation is the interactive launcher. Just run:
 
