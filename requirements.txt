@@ -8,3 +8,5 @@ pandas
 matplotlib
 PyYAML
 questionary
+imageio
+imageio-ffmpeg

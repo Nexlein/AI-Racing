@@ -1,6 +1,15 @@
 # AI Racing
 
-Reinforcement Learning agent that learns to drive a car around a track. Built with Gymnasium, Pygame, and Stable Baselines3.
+![AI Racing Demo](assets/demo.gif)
+*(Placeholder: Record a short GIF of the AI driving the track and save it as `assets/demo.gif`)*
+
+Reinforcement Learning agent that learns to drive a car around a track. Built with **Gymnasium**, **Pygame**, and **Stable Baselines3 (PPO)**.
+
+## Features
+- Custom kinematic physics and raycast sensors.
+- Fully isolated artifact tracking for 100% reproducible training runs.
+- Interactive terminal UI (TUI) for launching replays.
+- YouTube-style timeline scrubber and playback speed controls.
 
 ## Architecture
 
@@ -73,17 +82,20 @@ Saves `metrics.csv` and `trajectories.json` into `artifacts/<timestamp>/eval/`.
 
 ### 5. Visualization Hub (Interactive)
 
+![TUI Menu](assets/tui.png)
+*(Placeholder: Take a screenshot of the terminal menu and save it as `assets/tui.png`)*
+
 The easiest way to view the simulation is the interactive launcher. Just run:
 
 ```bash
 python visualize.py
 ```
 
-This opens an arrow-key navigable menu where you can select:
-
-1. **Mode**: Human Play, Evaluation Replay, or Training Replay.
-2. **Run**: Automatically lists all available runs from the `artifacts/` folder.
-3. **Filter**: Choose to view the best episode, all ghost cars, or a specific episode.
+#### Replay Controls
+- **Up / Down**: Speed up or slow down playback (+/- 30 FPS).
+- **Left / Right**: Skip 50 frames backward or forward.
+- **Mouse Click/Drag**: Scrub the timeline at the bottom of the window to instantly jump to any time.
+- **R**: Export the entire replay as `assets/demo.mp4` (automatically renders as fast as possible).
 
 You can also still use CLI arguments for automation:
 

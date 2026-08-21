@@ -4,6 +4,8 @@ import os
 import sys
 from argparse import Namespace
 
+import imageio
+import numpy as np
 import pandas as pd
 import pygame
 import questionary
@@ -175,6 +177,8 @@ def main():
     step_idx = 0
     running = True
     playback_fps = 60
+    recording = False
+    writer = None
 
     while running:
         for event in pygame.event.get():
@@ -191,6 +195,12 @@ def main():
                     step_idx = max(0, step_idx - 50)
                 elif event.key == pygame.K_RIGHT:
                     step_idx = min(max_steps - 1, step_idx + 50)
+                elif event.key == pygame.K_r and not recording:
+                    recording = True
+                    step_idx = 0
+                    os.makedirs("assets", exist_ok=True)
+                    writer = imageio.get_writer("assets/demo.mp4", fps=60)
+                    print("Started recording assets/demo.mp4...")
             elif (
                 event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION
             ) and pygame.mouse.get_pressed()[0]:
@@ -226,8 +236,11 @@ def main():
                         pygame.draw.line(screen, (0, 255, 255), car_pos, radar, 1)
                         pygame.draw.circle(screen, (0, 255, 255), radar, 3)
 
-        mode_text = f"Mode: {args.mode.upper()} | Filter: {args.episode} | Highlighted: {highlight_episode} | Speed: {playback_fps} FPS"
-        hud_text1 = font.render(mode_text, True, (255, 255, 255))
+        rec_str = "[RECORDING]" if recording else "Press R to Export MP4"
+        mode_text = f"Mode: {args.mode.upper()} | Speed: {playback_fps} FPS | {rec_str}"
+        hud_text1 = font.render(
+            mode_text, True, (255, 50, 50) if recording else (255, 255, 255)
+        )
         hud_text2 = font.render(
             f"Replay Step: {step_idx}/{max_steps}", True, (255, 255, 255)
         )
@@ -240,12 +253,24 @@ def main():
         pygame.draw.rect(screen, (200, 50, 50), (0, 580, progress_width, 20))
 
         pygame.display.flip()
-        clock.tick(playback_fps)
+
+        if recording:
+            frame = pygame.surfarray.pixels3d(screen)
+            frame = np.transpose(frame, (1, 0, 2))
+            writer.append_data(frame)
+        else:
+            clock.tick(playback_fps)
 
         step_idx += 1
         if all_done or step_idx >= max_steps:
             step_idx = 0  # Loop playback
+            if recording:
+                recording = False
+                writer.close()
+                print("Finished recording assets/demo.mp4")
 
+    if recording and writer:
+        writer.close()
     pygame.quit()
 
 
