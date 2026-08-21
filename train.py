@@ -37,7 +37,7 @@ def main():
     with open("config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    timestamp = datetime.now().astimezone().strftime("%Y-%m-%d_%H-%M-%S")
     run_dir = os.path.join("artifacts", timestamp)
     train_dir = os.path.join(run_dir, "train")
     model_dir = os.path.join(train_dir, "models")
