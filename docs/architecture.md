@@ -28,7 +28,7 @@ The AI is trained using a strict mathematical reward system that incentivizes sp
 
 ## 4. The Artifact System
 
-To ensure 100% reproducibility, every single training run generates an isolated directory containing all its data.
+Training is seeded from `seed` in `config.yaml` (PPO seeds Python, NumPy, PyTorch and the environment), and every training run generates an isolated directory containing all its data, so a run can be traced back and repeated.
 
 ```text
 artifacts/

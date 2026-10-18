@@ -75,6 +75,7 @@ def main():
         verbose=1,
         tensorboard_log=log_dir,
         learning_rate=config.get("learning_rate", 0.0003),
+        seed=config.get("seed"),
     )
 
     traj_env = RacingEnv()
