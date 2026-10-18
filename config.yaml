@@ -3,3 +3,4 @@ total_timesteps: 500000
 eval_freq: 5000
 save_freq: 10000
 trajectory_freq: 5000
+seed: 42

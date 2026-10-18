@@ -14,7 +14,7 @@ Reinforcement Learning agent that learns to drive a car around a track. Built wi
 ## Features
 
 - Custom kinematic physics and raycast sensors.
-- Fully isolated artifact tracking for 100% reproducible training runs.
+- Seeded training (`seed` in `config.yaml`) and isolated artifact tracking for reproducible runs.
 - Interactive terminal UI (TUI) for launching replays.
 - YouTube-style timeline scrubber and playback speed controls.
 

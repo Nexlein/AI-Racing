@@ -7,3 +7,4 @@ extend-select = ["I", "RUF", "SIM"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
