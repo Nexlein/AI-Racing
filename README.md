@@ -22,28 +22,26 @@ Reinforcement Learning agent that learns to drive a car around a track. Built wi
 
 ```bash
 # 1. Install
-python3 -m venv venv
-source venv/bin/activate
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install -r requirements.txt
+uv sync                  # Python 3.12, dependencies and CPU-only torch
+uvx pre-commit install   # Ruff on every commit
 
 # 2. Train the AI (Settings are in config.yaml)
-python train.py
+uv run train.py
 
 # 3. Evaluate the best model
-python evaluate.py --run <timestamp>
+uv run evaluate.py --run <timestamp>
 
 # 4. Watch the Replay
-python visualize.py
+uv run visualize.py
 ```
 
 ## Visualization Controls
 
-Running `python visualize.py` opens an interactive arrow-key terminal menu. Once the replay starts, use these controls:
+Running `uv run visualize.py` opens an interactive arrow-key terminal menu. Once the replay starts, use these controls:
 
 - **Up / Down**: Speed up or slow down playback (+/- 30 FPS).
 - **Left / Right**: Skip 50 frames backward or forward.
 - **Mouse Click/Drag**: Scrub the timeline at the bottom of the window to instantly jump to any time.
 - **R**: Export the entire replay to an `.mp4` file in the project root.
 
-*(You can also drive manually to test physics by running `python visualize.py --mode human`)*
+*(You can also drive manually to test physics by running `uv run visualize.py --mode human`)*
