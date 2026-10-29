@@ -7,10 +7,8 @@ We welcome contributions! To ensure high-quality code and maintain reproducibili
 Clone the repository and install the dependencies exactly as specified:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install -r requirements.txt
+uv sync                  # Python 3.12, dependencies and CPU-only torch
+uvx pre-commit install   # Ruff on every commit
 ```
 
 ## 2. Formatting & Linting
@@ -21,10 +19,10 @@ Before pushing your code, run:
 
 ```bash
 # Auto-fix linting errors (Imports, simplify rules, etc.)
-ruff check --fix .
+uv run ruff check --fix .
 
 # Auto-format code
-ruff format .
+uv run ruff format .
 ```
 
 ## 3. Pull Request Process
