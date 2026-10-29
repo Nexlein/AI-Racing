@@ -8,7 +8,8 @@ Clone the repository and install the dependencies exactly as specified:
 
 ```bash
 uv sync                  # Python 3.12, dependencies and CPU-only torch
-uvx pre-commit install   # Ruff, secret scan and commit message checks
+uv tool install pre-commit   # once per machine
+pre-commit install           # Ruff, secret scan and commit message checks
 ```
 
 ## 2. Formatting & Linting

@@ -23,7 +23,8 @@ Reinforcement Learning agent that learns to drive a car around a track. Built wi
 ```bash
 # 1. Install
 uv sync                  # Python 3.12, dependencies and CPU-only torch
-uvx pre-commit install   # Ruff, secret scan and commit message checks
+uv tool install pre-commit   # once per machine
+pre-commit install           # Ruff, secret scan and commit message checks
 
 # 2. Train the AI (Settings are in config.yaml)
 uv run train.py
