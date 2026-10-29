@@ -1,0 +1,39 @@
+{
+  // F5 runs a script under debugpy with the uv virtualenv (run `uv sync` first).
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Train",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/train.py",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Evaluate a run",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/evaluate.py",
+      "args": ["--run", "${input:run}", "--episodes", "1"],
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "console": "integratedTerminal"
+    },
+    {
+      // The replay menu needs a real terminal
+      "name": "Visualize (interactive menu)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/visualize.py",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "run",
+      "type": "promptString",
+      "description": "Run timestamp in artifacts/, e.g. 2026-08-21_14-30-00"
+    }
+  ]
+}
