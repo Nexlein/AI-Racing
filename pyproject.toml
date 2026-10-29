@@ -21,7 +21,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "pyright",
+    "basedpyright",
     "pytest",
     "ruff",
 ]
@@ -47,3 +47,7 @@ extend-select = ["I", "RUF", "SIM"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+[tool.basedpyright]
+# Same level as the editor (VSCodium basedpyright setting)
+typeCheckingMode = "standard"
